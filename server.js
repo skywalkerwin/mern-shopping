@@ -1,30 +1,29 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
-
-const items = require("./routes/api/items");
+const config = require("config");
 
 const app = express();
 
 // Bodyparser Middleware
-app.use(cors());
-app.use(bodyParser.json());
+// app.use(cors());
+app.use(express.json());
 
 // DB Config
-const db = require("./config/keys").mongoURI;
+const db = config.get("mongoURI");
 
 // const db = require("mongodb://127.0.0.1:27017/mern_shopping");
 
 //Connect to Mongo
 mongoose
-  .connect(db, { useNewUrlParser: true })
+  .connect(db, { useNewUrlParser: true, useCreateIndex: true })
   .then(() => console.log("MongoDB Connected..."))
   .catch(err => console.log(err));
 
 // Use Routes
-app.use("/api/items", items);
+app.use("/api/items", require("./routes/api/items"));
+app.use("/api/users", require("./routes/api/users"));
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === "production") {
