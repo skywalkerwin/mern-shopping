@@ -9,6 +9,7 @@ import store from "./store";
 import { loadUser } from "./actions/authActions";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+//Luke Nguyen
 
 class App extends Component {
   componentDidMount() {
