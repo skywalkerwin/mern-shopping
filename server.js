@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 
 // DB Config
-const db = config.get("mongoURI");
+const db = config.get("mongoURI");  
 
 // const db = require("mongodb://127.0.0.1:27017/mern_shopping");
 
