@@ -12,7 +12,7 @@ import {
 
 import { connect } from "react-redux";
 import { addItem } from "../actions/itemActions";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 class ItemModal extends Component {
   state = {
@@ -21,8 +21,9 @@ class ItemModal extends Component {
   };
 
   static propTypes = {
-    isAuthenticated: PropTypes.bool
-  }
+    isAuthenticated: PropTypes.bool,
+    user: PropTypes.object
+  };
 
   toggle = () => {
     this.setState({
@@ -37,7 +38,8 @@ class ItemModal extends Component {
   onSubmit = e => {
     e.preventDefault();
     const newItem = {
-      name: this.state.name
+      name: this.state.name,
+      owner: this.props.user.email
     };
     // Add item via addItem action
     this.props.addItem(newItem);
@@ -49,14 +51,18 @@ class ItemModal extends Component {
   render() {
     return (
       <div>
-        {this.props.isAuthenticated? <Button
-          color="dark"
-          style={{ marginBottom: "2rem" }}
-          onClick={this.toggle}
-        >
-          Add Item
-        </Button> : <h4 className='mb-3 ml-4'> Please Login To Manage Items </h4>}
-        
+        {this.props.isAuthenticated ? (
+          <Button
+            color="dark"
+            style={{ marginBottom: "2rem" }}
+            onClick={this.toggle}
+          >
+            Add Item
+          </Button>
+        ) : (
+          <h4 className="mb-3 ml-4"> Please Login To Manage Items </h4>
+        )}
+
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}>Add To Shopping List</ModalHeader>
           <ModalBody>
@@ -84,8 +90,8 @@ class ItemModal extends Component {
 
 const mapStateToProps = state => ({
   item: state.item,
-  isAuthenticated: state.auth.isAuthenticated
-
+  isAuthenticated: state.auth.isAuthenticated,
+  user: state.auth.user
 });
 
 export default connect(
